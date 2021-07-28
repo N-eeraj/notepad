@@ -1,4 +1,4 @@
-from os import listdir, remove
+from os import listdir, rename, remove
 while True:
     all_files = listdir("files")
     option = int(input("\nMain Menu\n1. New\n2. Edit\n3. Rename\n4. Delete\n5. Exit\nSelect Option: "))
@@ -20,7 +20,13 @@ while True:
         if option == 2:
             print("Edit")
         elif option == 3:
-            print("Rename")
+            file = input("Enter file name to rename: ")
+            if file not in all_files:
+                print("File not found")
+                continue
+            new_name = input("Enter new name: ")
+            rename("files/" + file, "files/" + new_name)
+            print("File Renamed")
         else:
             file = input("Enter file name to delete: ")
             if file not in all_files:
