@@ -1,6 +1,7 @@
 from tkinter import Tk, Menu, Text, messagebox
 from tkinter.constants import END
 from tkinter.simpledialog import askstring
+from os import listdir
 
 # function to get typed text
 def getText():
@@ -25,6 +26,12 @@ def saveFile():
     filename = askstring("Save File", "Enter filename")
     if filename != None:
         filename += ".txt"
+        if filename in file_list:
+            overwrite = messagebox.askyesnocancel("Warning", "A file with this name exists do you want to overwrite it?")
+            if overwrite == None:
+                return
+            elif overwrite == False:
+                return saveFile()
         file = open("files/" + filename, "w")
         file.writelines(getText())
         messagebox.showinfo("Saved", "The file has been saved")
@@ -72,7 +79,7 @@ text_area = Text(notepad, bg = "#FFF", fg = "#000")
 text_area.focus()
 text_area.place(relwidth = 1, relheight = 1, relx = 0, rely = 0)
 
-
+file_list = listdir("files")
 dark = False
 
 notepad.mainloop()
