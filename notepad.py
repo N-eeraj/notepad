@@ -10,7 +10,8 @@ def getText():
 # function to ask if to save file
 def askSave():
     if len(getText()) > 1:
-        return messagebox.askyesnocancel("Save File", "Do you want to save the file before exiting?")       
+        return messagebox.askyesnocancel("Save File", "Do you want to save the existing file?")
+    return False
 
 # funtion to create new file
 def newFile():
@@ -22,17 +23,33 @@ def newFile():
         return
     text_area.delete(1.0, END)
 
+# function to open file
+def openFile():
+    save_file = askSave()
+    if save_file == True:
+        if not saveFile():
+            return
+    elif save_file == None:
+        return
+    file_name = askstring("Open", "Enter filename") + ".txt"
+    if file_name not in file_list:
+        return messagebox.showerror("File Not Found", f"File with name {file_name} is not found")
+    file = open("files/" + file_name, "r+")
+    text_area.delete(1.0, END)
+    text_area.insert(1.0, file.read())
+
+
 def saveFile():
-    filename = askstring("Save File", "Enter filename")
-    if filename != None:
-        filename += ".txt"
-        if filename in file_list:
+    file_name = askstring("Save", "Enter filename")
+    if file_name != None:
+        file_name += ".txt"
+        if file_name in file_list:
             overwrite = messagebox.askyesnocancel("Warning", "A file with this name exists do you want to overwrite it?")
             if overwrite == None:
                 return
             elif overwrite == False:
                 return saveFile()
-        file = open("files/" + filename, "w")
+        file = open("files/" + file_name, "w")
         file.writelines(getText())
         messagebox.showinfo("Saved", "The file has been saved")
         return True
@@ -67,7 +84,7 @@ menubar = Menu(notepad)
 # menu bar
 file = Menu(menubar, tearoff = 0)
 file.add_command(label = "New File", command = newFile)
-file.add_command(label = "Open File")
+file.add_command(label = "Open File", command = openFile)
 file.add_command(label= "Save", command = saveFile)
 menubar.add_cascade(label = "File", menu = file)
 menubar.add_command(label = "Dark Mode", command = darkmode)
