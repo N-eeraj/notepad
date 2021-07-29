@@ -1,0 +1,12 @@
+
+
+This is simple GUI application created using Python library: Tkinter
+
+
+The features of this program includes:
+	Creating new text files
+	Open existing files
+	Save curent file
+	Dark Mode toggle
+	Ask to save on exit, creating new file, opening a file
+	Warning on existing file name
